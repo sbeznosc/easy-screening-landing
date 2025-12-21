@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Easy Screening — регулярный контроль здоровья</title>
+  <meta name="description" content="Проактивный контроль здоровья — просто, регулярно, без суеты. Первичная оценка за 2–3 минуты. Пилот Easy Screening." />
+
+  <style>
+    :root {
+      --bg = #0b0f14;
+      --card = #111827;
+      --muted = #94a3b8;
+      --text = #e5e7eb;
+      --accent = #22c55e;
+      --accent-2 = #60a5fa;
+      --danger = #f87171;
+      --border = rgba(148, 163, 184, 0.18);
+      --shadow = 0 12px 30px rgba(0, 0, 0, 0.35);
+      --radius = 18px;
+      --radius-sm = 12px;
+      --max = 1100px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background: radial-gradient(1200px 600px at 30% 0%, rgba(96, 165, 250, 0.10), transparent 60%),
+                  radial-gradient(1000px 500px at 80% 10%, rgba(34, 197, 94, 0.10), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .section {
+      padding: 28px 0;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.75);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    @media (min-width: 860px) {
+      .grid-2 { grid-template-columns: 1.2fr 0.8fr; }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      background: rgba(2, 6, 23, 0.35);
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: 34px; line-height: 1.08; }
+    @media (min-width: 860px) { h1 { font-size: 44px; } }
+
+    h2 { font-size: 22px; }
+    @media (min-width: 860px) { h2 { font-size: 28px; } }
+
+    p { margin: 0 0 10px 0; color: var(--muted); }
+    .lead { font-size: 16px; }
+    @media (min-width: 860px) { .lead { font-size: 18px; } }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .brand strong {
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    button, .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(2, 6, 23, 0.35);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.06s ease, border-color 0.15s ease, background 0.15s ease;
+      font-weight: 600;
+    }
+    button:hover, .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(148, 163, 184, 0.35);
+      background: rgba(2, 6, 23, 0.55);
+    }
+    .btn-primary {
+      border-color: rgba(34, 197, 94, 0.35);
+      background: rgba(34, 197, 94, 0.15);
+    }
+    .btn-primary:hover {
+      border-color: rgba(34, 197, 94, 0.55);
+      background: rgba(34, 197, 94, 0.22);
+    }
+    .btn-secondary {
+      border-color: rgba(96, 165, 250, 0.35);
+      background: rgba(96, 165, 250, 0.12);
+    }
+    .btn-secondary:hover {
+      border-color: rgba(96, 165, 250, 0.55);
+      background: rgba(96, 165, 250, 0.18);
+    }
+    .btn-danger {
+      border-color: rgba(248, 113, 113, 0.45);
+      background: rgba(248, 113, 113, 0.10);
+    }
+
+    .small { font-size: 13px; color: var(--muted); }
+    .muted { color: var(--muted); }
+
+    .feature {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: rgba(2, 6, 23, 0.25);
+    }
+
+    .feature h3 { font-size: 16px; margin-bottom: 6px; }
+    .feature p { margin: 0; font-size: 13px; }
+
+    .steps .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .steps .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(96, 165, 250, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.25);
+      color: var(--text);
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .quiz-wrap { display: none; }
+    .quiz-wrap.active { display: block; }
+
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+      overflow: hidden;
+      margin: 10px 0 18px 0;
+      border: 1px solid rgba(148, 163, 184, 0.10);
+    }
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(34, 197, 94, 0.85), rgba(96, 165, 250, 0.85));
+    }
+
+    .opts {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+      margin-top: 12px;
+    }
+    @media (min-width: 860px) {
+      .opts { grid-template-columns: 1fr 1fr; }
+    }
+
+    .opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.25);
+      cursor: pointer;
+      user-select: none;
+    }
+    .opt input { margin-top: 3px; }
+    .opt span { color: var(--text); }
+    .opt:hover { border-color: rgba(148, 163, 184, 0.35); }
+
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.35);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .divider { height: 1px; background: rgba(148, 163, 184, 0.16); margin: 16px 0; }
+
+    .form-row {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+      margin-top: 10px;
+    }
+    @media (min-width: 860px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"] {
+      width: 100%;
+      border-radius: 12px;
+      padding: 12px 12px;
+      background: rgba(2, 6, 23, 0.35);
+      border: 1px solid var(--border);
+      color: var(--text);
+      outline: none;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+      border-color: rgba(96, 165, 250, 0.45);
+    }
+
+    .checkbox {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .faq details {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .faq summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 700;
+    }
+    .faq p { margin-top: 10px; }
+
+    .admin {
+      display: none;
+      margin-top: 16px;
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      background: rgba(2, 6, 23, 0.25);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .admin.active { display: block; }
+
+    .kpi {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (min-width: 860px) { .kpi { grid-template-columns: repeat(4, 1fr); } }
+    .kpi .tile {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .tile .v { font-size: 20px; font-weight: 900; margin-top: 4px; }
+    .tile .l { color: var(--muted); font-size: 12px; }
+
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0 30px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.25);
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- HERO (Tilda/Webflow: Hero / Header) -->
+    <section class="section">
+      <div class="brand">
+        <div class="pill">
+          <strong>Easy Screening</strong>
+          <span class="muted">Москва • пилот</span>
+        </div>
+        <button id="btnToggleAdmin" class="btn" type="button">Метрики</button>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h1>Проактивный контроль здоровья — просто, регулярно, без суеты</h1>
+          <p class="lead">Отслеживайте <b>тренд</b> показателей и понимайте, что происходит, ещё до симптомов. 2–3 минуты на первичную оценку.</p>
+
+          <div class="btn-row">
+            <button id="btnStartQuizTop" class="btn-primary" type="button">Пройти первичную оценку</button>
+            <a class="btn btn-secondary" href="#how">Как это работает</a>
+          </div>
+
+          <div class="divider"></div>
+          <p class="small">Не диагноз и не лечение. Это навигация и мониторинг на основе данных — под экспертным контролем врачей.</p>
+
+          <div class="admin" id="adminPanel">
+            <div class="small">Локальные метрики (берутся из localStorage). Для пилота этого достаточно. Позже можно подключить GA4/PostHog.</div>
+            <div class="kpi" id="kpiTiles"></div>
+
+            <div class="btn-row">
+              <button id="btnExportData" class="btn" type="button">Экспорт JSON</button>
+              <button id="btnClearData" class="btn btn-danger" type="button">Очистить данные</button>
+            </div>
+
+            <div class="small" style="margin-top: 10px;">
+              Подсказка: открой страницу с параметром <span class="tag">?admin=1</span>, чтобы панель была открыта по умолчанию.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pill">Ядро бренда</div>
+          <div style="margin-top: 12px;"></div>
+          <h2>Регулярно. Просто. Здоровье под контролем.</h2>
+          <p>Чекапы в два клика. Без очередей. Без суеты. Без лишних действий.</p>
+
+          <div style="margin-top: 16px;" class="grid grid-3">
+            <div class="feature">
+              <h3>Тренд</h3>
+              <p>Симптомов может не быть. Динамика покажет больше.</p>
+            </div>
+            <div class="feature">
+              <h3>Подписка</h3>
+              <p>Контроль по плану: базовый и расширенный — по ситуации.</p>
+            </div>
+            <div class="feature">
+              <h3>Консьерж</h3>
+              <p>AI-поддержка + экспертный надзор врачей.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUE PROPS (Tilda/Webflow: Features grid) -->
+    <section class="section" id="value">
+      <div class="card">
+        <h2>Почему это работает как сервис</h2>
+        <p class="lead">Разовый чекап — это снимок. Регулярный контроль — это тренд, который помогает действовать заранее.</p>
+
+        <div class="grid grid-3" style="margin-top: 14px;">
+          <div class="feature">
+            <h3>Тренд важнее цифры</h3>
+            <p>Мы отслеживаем динамику, чтобы видеть изменения раньше.</p>
+          </div>
+          <div class="feature">
+            <h3>Регулярно, без суеты</h3>
+            <p>План контроля встроен в жизнь: понятно и последовательно.</p>
+          </div>
+          <div class="feature">
+            <h3>Персонально</h3>
+            <p>Программы под возраст, образ жизни и контекст (включая корпоративный).</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <p class="small">«Четыре чекапа в год — двенадцать месяцев спокойствия» • «Симптомов нет? Тренд всё расскажет.»</p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (Tilda/Webflow: Steps / Timeline) -->
+    <section class="section" id="how">
+      <div class="card">
+        <h2>Как это работает</h2>
+        <div class="grid steps" style="margin-top: 14px;">
+          <div class="step">
+            <div class="num">1</div>
+            <div>
+              <h3>Ответьте на вопросы (2–3 минуты)</h3>
+              <p>Пошаговый опрос поможет понять общий уровень контроля и приоритеты наблюдения.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <div>
+              <h3>Получите уровень контроля</h3>
+              <p>Без диагнозов: только понятная навигация — где стоит усилить регулярность.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <div>
+              <h3>Войдите в пилот</h3>
+              <p>Расширенный результат + лучшие условия: ранний доступ и скидка на подписку.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button id="btnStartQuizMid" class="btn-primary" type="button">Пройти первичную оценку</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ (Tilda/Webflow: Multi-step form / Quiz) -->
+    <section class="section" id="quiz">
+      <div class="card">
+        <h2>Первичная оценка здоровья</h2>
+        <p class="small">Это не диагностика. Мы используем ответы, чтобы определить уровень контроля и сегментировать запрос для пилота.</p>
+
+        <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+
+        <div id="quizWrap" class="quiz-wrap">
+          <div class="pill" id="quizStepLabel">Шаг 1 из 6</div>
+          <div style="margin-top: 12px;"></div>
+
+          <h3 id="quizTitle"></h3>
+          <div class="opts" id="quizOptions"></div>
+
+          <div class="btn-row">
+            <button id="btnPrev" class="btn" type="button">Назад</button>
+            <button id="btnNone" class="btn" type="button">Ничего не беспокоит</button>
+            <button id="btnNext" class="btn-primary" type="button">Далее</button>
+          </div>
+
+          <div class="small" id="quizHint" style="margin-top: 10px;"></div>
+        </div>
+
+        <div id="quizClosed" class="small" style="margin-top: 10px;">
+          Нажмите «Пройти первичную оценку», чтобы начать.
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RESULT TEASER -->
+    <section class="section" id="result">
+      <div class="card">
+        <h2>Ваш результат</h2>
+        <p class="lead">Мы покажем уровень контроля и объясним, почему он такой. Детализация — в расширенном результате для пилота.</p>
+
+        <div class="divider"></div>
+
+        <div id="resultEmpty" class="small">Сначала пройдите оценку — результат появится здесь.</div>
+
+        <div id="resultCard" style="display: none;">
+          <div class="result-badge" id="resultBadge"></div>
+          <div style="margin-top: 12px;"></div>
+          <h3 id="resultTitle"></h3>
+          <p id="resultText"></p>
+
+          <div class="divider"></div>
+
+          <h3>Что будет в расширенном результате</h3>
+          <ul class="small" style="margin: 8px 0 0 16px; color: var(--muted);">
+            <li>Приоритеты контроля на 3–6 месяцев</li>
+            <li>Сегмент (возраст / активность) и подходящая программа мониторинга</li>
+            <li>Приглашение в пилот Easy Screening с лучшими условиями</li>
+          </ul>
+
+          <div class="btn-row">
+            <button id="btnShowLead" class="btn-primary" type="button">Получить расширенный результат</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LEAD CAPTURE -->
+    <section class="section" id="lead">
+      <div class="card">
+        <h2>Расширенный результат и пилот</h2>
+        <p class="lead">Оставьте контакт — мы отправим расширенный результат и пригласим вас в пилот Easy Screening.</p>
+
+        <div class="form-row">
+          <input id="leadName" type="text" inputmode="text" placeholder="Имя (опционально)" />
+          <input id="leadContact" type="text" inputmode="email" placeholder="Email или телефон" />
+        </div>
+
+        <label class="checkbox">
+          <input id="leadConsent" type="checkbox" />
+          <span>Согласен(на) на обработку данных и получение материалов по пилоту Easy Screening. Понимаю, что это не медицинская диагностика.</span>
+        </label>
+
+        <div class="btn-row">
+          <button id="btnSubmitLead" class="btn-primary" type="button">Получить расширенный результат и доступ в пилот</button>
+        </div>
+
+        <div class="small" id="leadStatus" style="margin-top: 10px;"></div>
+
+        <div class="divider"></div>
+        <p class="small">В пилоте можно использовать уже существующие анализы — мы поможем структурировать данные и понять тренд.</p>
+      </div>
+    </section>
+
+    <!-- PILOT OFFER -->
+    <section class="section" id="pilot">
+      <div class="card">
+        <h2>Пилот Easy Screening</h2>
+        <p class="lead">Условно бесплатно • ранний доступ • сильная скидка на подписку</p>
+
+        <div class="grid grid-3" style="margin-top: 14px;">
+          <div class="feature">
+            <h3>Можно с вашими анализами</h3>
+            <p>Если уже сдавали — поможем перепроверить и собрать картину.</p>
+          </div>
+          <div class="feature">
+            <h3>Лучшие условия</h3>
+            <p>Приоритетный доступ + скидка на подписку без скрытых условий.</p>
+          </div>
+          <div class="feature">
+            <h3>Консьерж + AI</h3>
+            <p>Рекомендательная логика на основе мировых практик под экспертным контролем.</p>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button id="btnPilotCta" class="btn-primary" type="button">Войти в пилот</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORPORATE -->
+    <section class="section" id="corporate">
+      <div class="card">
+        <h2>Подходит для корпоративных программ здоровья</h2>
+        <p class="lead">Регулярный контроль сотрудников без перегруза и формальностей — с понятной аналитикой по группе.</p>
+        <p class="small">На пилоте мы фиксируем корпоративный интерес как отдельную когорту, чтобы оценить спрос.</p>
+
+        <div class="btn-row">
+          <button id="btnCorporateInterest" class="btn-secondary" type="button">Я от компании</button>
+        </div>
+
+        <div class="small" id="corpStatus" style="margin-top: 10px;"></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="card faq">
+        <h2>FAQ</h2>
+        <div class="grid" style="margin-top: 12px;">
+          <details>
+            <summary>Это медицинская диагностика?</summary>
+            <p>Нет. Easy Screening не ставит диагнозы и не назначает лечение. Это сервис навигации и мониторинга на основе данных — чтобы понимать тренд и вовремя усиливать контроль.</p>
+          </details>
+          <details>
+            <summary>Сколько времени занимает первичная оценка?</summary>
+            <p>Обычно 2–3 минуты. Вопросы пошаговые, можно пропускать блоки кнопкой «Ничего не беспокоит».</p>
+          </details>
+          <details>
+            <summary>Что я получу в пилоте?</summary>
+            <p>Расширенный результат, приоритетный доступ к приложению и лучшие условия подписки. Также можно загрузить уже существующие анализы — чтобы собрать картину и тренд.</p>
+          </details>
+          <details>
+            <summary>Кто видит мои данные?</summary>
+            <p>В этой пилотной версии данные сохраняются локально в вашем браузере. При отправке контакта мы сохраняем только то, что вы отправляете в форме, чтобы пригласить вас в пилот.</p>
+          </details>
+        </div>
+
+        <div class="divider"></div>
+        <p class="small">
+          Дисклеймер: материалы на странице носят информационный характер и не являются медицинской рекомендацией.
+        </p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div>© <span id="year"></span> Easy Screening</div>
+      <div class="small">Москва • пилот • контакт: hello@example.com</div>
+    </div>
+
+  </div>
+
+  <script>
+    // -----------------------------
+    // Data + Events (pilot metrics)
+    // -----------------------------
+    const STORAGE_KEYS = {
+      events: "es_events_v1",
+      leads: "es_leads_v1",
+      quiz: "es_quiz_v1"
+    };
+
+    const WEBHOOK_URL = ""; // Optional: set your webhook URL to collect leads/events server-side
+
+    function nowIso() {
+      return new Date().toISOString();
+    }
+
+    function loadJson(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        return JSON.parse(raw);
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    function saveJson(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function uuid() {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+        const r = Math.random() * 16 | 0;
+        const v = c === "x" ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function track(eventName, props = {}) {
+      const events = loadJson(STORAGE_KEYS.events, []);
+      const ev = {
+        id: uuid(),
+        ts: nowIso(),
+        name: eventName,
+        props
+      };
+      events.push(ev);
+      saveJson(STORAGE_KEYS.events, events);
+
+      // Optional webhook (fire-and-forget)
+      if (WEBHOOK_URL) {
+        fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "event", payload: ev })
+        }).catch(() => {});
+      }
+
+      renderKpis();
+    }
+
+    function saveLead(lead) {
+      const leads = loadJson(STORAGE_KEYS.leads, []);
+      leads.push(lead);
+      saveJson(STORAGE_KEYS.leads, leads);
+
+      if (WEBHOOK_URL) {
+        fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "lead", payload: lead })
+        }).catch(() => {});
+      }
+
+      renderKpis();
+    }
+
+    // -----------------------------
+    // Quiz configuration
+    // -----------------------------
+    const quizSteps = [
+      {
+        id: "age",
+        title: "Ваш возрастной сегмент",
+        type: "single",
+        noneLabel: "Пропустить",
+        options: [
+          { id: "age_25_40", label: "25–40" },
+          { id: "age_40_70", label: "40–70" }
+        ],
+        hint: "Нужно, чтобы подобрать подходящую программу контроля."
+      },
+      {
+        id: "activity",
+        title: "Какой у вас образ жизни?",
+        type: "single",
+        noneLabel: "Пропустить",
+        options: [
+          { id: "act_low", label: "Малоактивный" },
+          { id: "act_active", label: "Активный" },
+          { id: "act_very_active", label: "Очень активный / спорт" }
+        ],
+        hint: "Мы используем это как когорту для пилота и персонализации результата."
+      },
+      {
+        id: "general_symptoms",
+        title: "Какие ещё симптомы регулярно беспокоят вас в последние месяцы?",
+        type: "multi",
+        noneLabel: "Ничего не беспокоит",
+        options: [
+          { id: "gen_headaches", label: "Частые головные боли" },
+          { id: "gen_weakness", label: "Слабость" },
+          { id: "gen_anxiety", label: "Тревога или раздражительность" },
+          { id: "gen_hair_nails", label: "Волосы выпадают или слоятся ногти" },
+          { id: "gen_thrush_herpes", label: "Рецидивирующая молочница или герпес" },
+          { id: "gen_constipation", label: "Склонность к запорам" },
+          { id: "gen_loose_stool", label: "Склонность к неоформленному стулу" }
+        ],
+        hint: "Можно выбрать несколько пунктов или нажать «Ничего не беспокоит»."
+      },
+      {
+        id: "nervous",
+        title: "Есть ли у вас неприятные симптомы со стороны нервной системы?",
+        type: "multi",
+        noneLabel: "Ничего не беспокоит",
+        options: [
+          { id: "nerv_excitable", label: "Повышенная возбудимость" },
+          { id: "nerv_sleepy", label: "Сонливость" },
+          { id: "nerv_memory", label: "Плохая память" },
+          { id: "nerv_attention", label: "Дефицит внимания" },
+          { id: "nerv_insomnia", label: "Бессонница" },
+          { id: "nerv_depression", label: "Депрессивное состояние" }
+        ],
+        hint: "Это не диагноз — только сигнал для настройки контроля."
+      },
+      {
+        id: "hormonal",
+        title: "Теперь поговорим о гормональной системе. Есть ли у вас такие проблемы?",
+        type: "multi",
+        noneLabel: "Ничего не беспокоит",
+        options: [
+          { id: "horm_fatigue", label: "Непроходящая усталость" },
+          { id: "horm_sweating", label: "Повышенная потливость" },
+          { id: "horm_palpitations", label: "Учащённое сердцебиение" },
+          { id: "horm_weight_loss", label: "Необъяснимое снижение веса" },
+          { id: "horm_dry_skin", label: "Выраженная сухость кожи" },
+          { id: "horm_hair_loss", label: "Выпадение волос" },
+          { id: "horm_edema", label: "Отёчность лица/ног/пальцев" },
+          { id: "horm_weight_gain", label: "Лишний вес, который не снижается" },
+          { id: "horm_tremor", label: "Дрожат пальцы или подрагивают мышцы" },
+          { id: "horm_sweets", label: "Сильная тяга к сладкому" }
+        ],
+        hint: "Если ничего не беспокоит — нажмите соответствующую кнопку."
+      },
+      {
+        id: "conditions",
+        title: "Подтвердите сопутствующие/ранее диагностированные состояния",
+        type: "multi",
+        noneLabel: "Ничем из этого не болею",
+        options: [
+          { id: "cond_prediabetes", label: "Преддиабет" },
+          { id: "cond_chol", label: "Высокий уровень холестерина" },
+          { id: "cond_anemia", label: "Анемия" },
+          { id: "cond_autoimmune", label: "Аутоиммунные заболевания" },
+          { id: "cond_onco", label: "Онкологические заболевания" },
+          { id: "cond_gi", label: "Расстройства пищеварения (ГЭРБ, язва и др.)" },
+          { id: "cond_arthritis", label: "Артрит" },
+          { id: "cond_ed", label: "Расстройства пищевого поведения" },
+          { id: "cond_cvd", label: "Сердечно-сосудистые заболевания" },
+          { id: "cond_bp_high", label: "Высокое давление" },
+          { id: "cond_bp_low", label: "Всегда пониженное давление" }
+        ],
+        hint: "Данные нужны для сегментации и корректной оценки уровня контроля."
+      }
+    ];
+
+    const scoreWeights = {
+      // Symptoms
+      gen_headaches: 1,
+      gen_weakness: 1,
+      gen_anxiety: 1,
+      gen_hair_nails: 1,
+      gen_thrush_herpes: 2,
+      gen_constipation: 1,
+      gen_loose_stool: 1,
+
+      nerv_excitable: 1,
+      nerv_sleepy: 1,
+      nerv_memory: 2,
+      nerv_attention: 2,
+      nerv_insomnia: 2,
+      nerv_depression: 2,
+
+      horm_fatigue: 2,
+      horm_sweating: 1,
+      horm_palpitations: 2,
+      horm_weight_loss: 2,
+      horm_dry_skin: 1,
+      horm_hair_loss: 1,
+      horm_edema: 2,
+      horm_weight_gain: 2,
+      horm_tremor: 2,
+      horm_sweets: 1,
+
+      // Conditions (heavier)
+      cond_prediabetes: 4,
+      cond_chol: 3,
+      cond_anemia: 3,
+      cond_autoimmune: 4,
+      cond_onco: 5,
+      cond_gi: 2,
+      cond_arthritis: 3,
+      cond_ed: 3,
+      cond_cvd: 5,
+      cond_bp_high: 4,
+      cond_bp_low: 2
+    };
+
+    const resultLevels = [
+      {
+        id: "level_a",
+        badge: "Базовый уровень контроля",
+        title: "Базовый уровень контроля",
+        text: "По вашим ответам нет выраженных сигналов, которые требуют усиленного мониторинга прямо сейчас. Но разовые ощущения не показывают динамику — ценность в регулярности: тренд помогает действовать заранее."
+      },
+      {
+        id: "level_b",
+        badge: "Контроль требует внимания",
+        title: "Контроль требует внимания",
+        text: "Есть сигналы, которые лучше не оставлять без регулярного наблюдения. Это не диагноз — это повод выстроить понятный план контроля и посмотреть тренд в ближайшие месяцы."
+      },
+      {
+        id: "level_c",
+        badge: "Повышенная потребность в мониторинге",
+        title: "Повышенная потребность в регулярном мониторинге",
+        text: "Есть сочетания ответов и/или ранее диагностированные состояния, где регулярность особенно важна. Цель — управлять рисками и видеть динамику, а не ждать ухудшения."
+      },
+      {
+        id: "level_d",
+        badge: "Нужен персональный маршрут",
+        title: "Нужен персональный маршрут контроля",
+        text: "Картина смешанная: часть ответов требует точной приоритизации. Мы выстроим маршрут по шагам — сначала главное, затем второстепенное — чтобы контроль был простым и регулярным."
+      }
+    ];
+
+    // -----------------------------
+    // Quiz state
+    // -----------------------------
+    const quizState = {
+      started: false,
+      completed: false,
+      stepIndex: 0,
+      answers: {}, // stepId -> array of option ids
+      cohort: { age: null, activity: null, corporate: false },
+      score: 0,
+      resultId: null
+    };
+
+    function resetQuiz() {
+      quizState.started = false;
+      quizState.completed = false;
+      quizState.stepIndex = 0;
+      quizState.answers = {};
+      quizState.cohort = { age: null, activity: null, corporate: false };
+      quizState.score = 0;
+      quizState.resultId = null;
+      saveJson(STORAGE_KEYS.quiz, quizState);
+    }
+
+    function loadQuizState() {
+      const saved = loadJson(STORAGE_KEYS.quiz, null);
+      if (saved && typeof saved === "object") {
+        Object.assign(quizState, saved);
+      }
+    }
+
+    function computeScoreAndResult() {
+      let score = 0;
+
+      for (const [stepId, selected] of Object.entries(quizState.answers)) {
+        for (const optId of selected) {
+          score += (scoreWeights[optId] || 0);
+        }
+      }
+
+      quizState.score = score;
+
+      // Simple rule-based mapping
+      // A: 0–3, B: 4–8, C: 9–14, D: 15+
+      let result;
+      if (score <= 3) result = resultLevels[0];
+      else if (score <= 8) result = resultLevels[1];
+      else if (score <= 14) result = resultLevels[2];
+      else result = resultLevels[3];
+
+      quizState.resultId = result.id;
+      saveJson(STORAGE_KEYS.quiz, quizState);
+
+      return result;
+    }
+
+    function setCohortsFromAnswers() {
+      const ageAns = quizState.answers["age"] || [];
+      const actAns = quizState.answers["activity"] || [];
+
+      quizState.cohort.age = ageAns[0] || null;
+      quizState.cohort.activity = actAns[0] || null;
+
+      saveJson(STORAGE_KEYS.quiz, quizState);
+    }
+
+    // -----------------------------
+    // UI bindings
+    // -----------------------------
+    const yearEl = document.getElementById("year");
+    yearEl.textContent = String(new Date().getFullYear());
+
+    const adminPanel = document.getElementById("adminPanel");
+    const btnToggleAdmin = document.getElementById("btnToggleAdmin");
+    const kpiTiles = document.getElementById("kpiTiles");
+
+    const btnStartQuizTop = document.getElementById("btnStartQuizTop");
+    const btnStartQuizMid = document.getElementById("btnStartQuizMid");
+
+    const quizWrap = document.getElementById("quizWrap");
+    const quizClosed = document.getElementById("quizClosed");
+    const quizStepLabel = document.getElementById("quizStepLabel");
+    const quizTitle = document.getElementById("quizTitle");
+    const quizOptions = document.getElementById("quizOptions");
+    const quizHint = document.getElementById("quizHint");
+    const progressBar = document.getElementById("progressBar");
+
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
+    const btnNone = document.getElementById("btnNone");
+
+    const resultEmpty = document.getElementById("resultEmpty");
+    const resultCard = document.getElementById("resultCard");
+    const resultBadge = document.getElementById("resultBadge");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const btnShowLead = document.getElementById("btnShowLead");
+
+    const leadName = document.getElementById("leadName");
+    const leadContact = document.getElementById("leadContact");
+    const leadConsent = document.getElementById("leadConsent");
+    const btnSubmitLead = document.getElementById("btnSubmitLead");
+    const leadStatus = document.getElementById("leadStatus");
+
+    const btnPilotCta = document.getElementById("btnPilotCta");
+    const btnCorporateInterest = document.getElementById("btnCorporateInterest");
+    const corpStatus = document.getElementById("corpStatus");
+
+    const btnExportData = document.getElementById("btnExportData");
+    const btnClearData = document.getElementById("btnClearData");
+
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function isAdminOn() {
+      const url = new URL(window.location.href);
+      return url.searchParams.get("admin") === "1";
+    }
+
+    function setAdminVisible(visible) {
+      adminPanel.classList.toggle("active", visible);
+    }
+
+    function renderKpis() {
+      const events = loadJson(STORAGE_KEYS.events, []);
+      const leads = loadJson(STORAGE_KEYS.leads, []);
+      const quiz = loadJson(STORAGE_KEYS.quiz, null);
+
+      const count = (name) => events.filter(e => e.name === name).length;
+
+      const landingView = count("landing_view");
+      const ctaClick = count("cta_start_quiz_click");
+      const quizStart = count("quiz_start");
+      const quizComplete = count("quiz_complete");
+      const leadSubmit = count("lead_submit");
+      const pilotYes = count("pilot_interest_yes");
+
+      const cr = (a, b) => (b > 0 ? Math.round((a / b) * 1000) / 10 : 0);
+
+      const tiles = [
+        { label: "Визиты", value: landingView },
+        { label: "Клик в квиз", value: ctaClick + " (" + cr(ctaClick, landingView) + "%)" },
+        { label: "Завершили квиз", value: quizComplete + " (" + cr(quizComplete, quizStart) + "%)" },
+        { label: "Лиды", value: leadSubmit + " (" + cr(leadSubmit, quizComplete) + "%)" },
+        { label: "Хочу в пилот", value: pilotYes + " (" + cr(pilotYes, leadSubmit) + "%)" },
+        { label: "Всего лидов (таблица)", value: leads.length },
+        { label: "Последний результат", value: quiz && quiz.resultId ? quiz.resultId : "—" },
+        { label: "Сегменты (посл.)", value: quiz && quiz.cohort ? (quiz.cohort.age || "—") + " / " + (quiz.cohort.activity || "—") : "—" }
+      ];
+
+      kpiTiles.innerHTML = tiles.map(t => {
+        return `
+          <div class="tile">
+            <div class="l">${escapeHtml(t.label)}</div>
+            <div class="v">${escapeHtml(String(t.value))}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function escapeHtml(s) {
+      return s
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function openQuiz() {
+      quizState.started = true;
+      quizWrap.classList.add("active");
+      quizClosed.style.display = "none";
+      saveJson(STORAGE_KEYS.quiz, quizState);
+      track("quiz_start", {});
+      renderStep();
+      scrollToId("quiz");
+    }
+
+    function renderStep() {
+      const total = quizSteps.length;
+      const idx = quizState.stepIndex;
+      const step = quizSteps[idx];
+
+      quizStepLabel.textContent = "Шаг " + (idx + 1) + " из " + total;
+      quizTitle.textContent = step.title;
+      quizHint.textContent = step.hint || "";
+
+      btnNone.textContent = step.noneLabel || "Ничего не беспокоит";
+      btnPrev.disabled = (idx === 0);
+
+      const pct = Math.round(((idx) / Math.max(1, total - 1)) * 100);
+      progressBar.style.width = pct + "%";
+
+      const selected = quizState.answers[step.id] || [];
+      quizOptions.innerHTML = "";
+
+      for (const opt of step.options) {
+        const checked = selected.includes(opt.id);
+        const inputType = (step.type === "single") ? "radio" : "checkbox";
+        const name = "q_" + step.id;
+
+        const row = document.createElement("label");
+        row.className = "opt";
+        row.innerHTML = `
+          <input type="${inputType}" name="${name}" value="${opt.id}" ${checked ? "checked" : ""} />
+          <span>${escapeHtml(opt.label)}</span>
+        `;
+
+        row.addEventListener("click", (e) => {
+          // Keep native input behavior, but ensure proper single/multi handling
+          const input = row.querySelector("input");
+          if (!input) return;
+
+          // Prevent double toggling
+          if (e.target && e.target.tagName.toLowerCase() !== "input") {
+            input.checked = !input.checked;
+          }
+
+          const current = new Set(quizState.answers[step.id] || []);
+
+          if (step.type === "single") {
+            current.clear();
+            if (input.checked) current.add(opt.id);
+            // Uncheck other radios visually
+            for (const other of quizOptions.querySelectorAll("input[type='radio']")) {
+              if (other !== input) other.checked = false;
+            }
+          } else {
+            if (input.checked) current.add(opt.id);
+            else current.delete(opt.id);
+          }
+
+          quizState.answers[step.id] = Array.from(current);
+          saveJson(STORAGE_KEYS.quiz, quizState);
+          track("quiz_step_answer", { stepId: step.id, count: quizState.answers[step.id].length });
+        });
+
+        quizOptions.appendChild(row);
+      }
+
+      track("quiz_step_view", { stepId: step.id, stepIndex: idx });
+    }
+
+    function applyNoneForStep() {
+      const step = quizSteps[quizState.stepIndex];
+      quizState.answers[step.id] = [];
+      saveJson(STORAGE_KEYS.quiz, quizState);
+      track("quiz_step_none", { stepId: step.id });
+      renderStep();
+    }
+
+    function nextStep() {
+      const idx = quizState.stepIndex;
+      if (idx < quizSteps.length - 1) {
+        quizState.stepIndex += 1;
+        saveJson(STORAGE_KEYS.quiz, quizState);
+        renderStep();
+        return;
+      }
+
+      // Complete quiz
+      quizState.completed = true;
+      setCohortsFromAnswers();
+      const result = computeScoreAndResult();
+
+      track("quiz_complete", {
+        score: quizState.score,
+        resultId: result.id,
+        cohort: quizState.cohort
+      });
+
+      renderResult(result);
+      scrollToId("result");
+    }
+
+    function prevStep() {
+      if (quizState.stepIndex <= 0) return;
+      quizState.stepIndex -= 1;
+      saveJson(STORAGE_KEYS.quiz, quizState);
+      renderStep();
+    }
+
+    function renderResult(result) {
+      resultEmpty.style.display = "none";
+      resultCard.style.display = "block";
+
+      resultBadge.textContent = result.badge;
+      resultTitle.textContent = result.title;
+      resultText.textContent = result.text;
+
+      track("result_view", { resultId: result.id, score: quizState.score });
+    }
+
+    function showLeadForm() {
+      track("lead_form_view", {});
+      scrollToId("lead");
+    }
+
+    function validateContact(value) {
+      const v = String(value || "").trim();
+      if (!v) return { ok: false, reason: "Введите email или телефон." };
+
+      const looksEmail = v.includes("@") && v.includes(".");
+      const digits = v.replaceAll(/[^\d]/g, "");
+      const looksPhone = digits.length >= 10;
+
+      if (!looksEmail && !looksPhone) {
+        return { ok: false, reason: "Похоже, это не email и не телефон. Проверьте формат." };
+      }
+
+      return { ok: true, type: looksEmail ? "email" : "phone", normalized: looksEmail ? v.toLowerCase() : digits };
+    }
+
+    function submitLead() {
+      const name = String(leadName.value || "").trim();
+      const contactRaw = String(leadContact.value || "").trim();
+
+      const check = validateContact(contactRaw);
+      if (!check.ok) {
+        leadStatus.textContent = check.reason;
+        leadStatus.style.color = "var(--danger)";
+        return;
+      }
+
+      if (!leadConsent.checked) {
+        leadStatus.textContent = "Нужно согласие на обработку данных (чекбокс).";
+        leadStatus.style.color = "var(--danger)";
+        return;
+      }
+
+      const lead = {
+        id: uuid(),
+        ts: nowIso(),
+        name: name || null,
+        contact_type: check.type,
+        contact: check.normalized,
+        consent: true,
+        cohort: quizState.cohort,
+        quiz: {
+          resultId: quizState.resultId,
+          score: quizState.score,
+          answers: quizState.answers
+        }
+      };
+
+      saveLead(lead);
+      track("lead_submit", { contact_type: check.type, cohort: quizState.cohort, resultId: quizState.resultId });
+
+      leadStatus.textContent = "Готово. Мы сохранили заявку на пилот. Следующий шаг — приглашение и расширенный результат.";
+      leadStatus.style.color = "var(--accent)";
+
+      // Optional: show "pilot interest" action
+      // Here we treat lead submit as strong intent, but we also have a dedicated CTA event
+    }
+
+    function pilotInterest() {
+      track("pilot_interest_yes", { cohort: quizState.cohort, resultId: quizState.resultId });
+      scrollToId("lead");
+      leadStatus.textContent = "Отлично. Оставьте контакт — и мы пригласим вас в пилот с лучшими условиями.";
+      leadStatus.style.color = "var(--accent)";
+    }
+
+    function markCorporate() {
+      quizState.cohort.corporate = true;
+      saveJson(STORAGE_KEYS.quiz, quizState);
+      track("corporate_interest_yes", {});
+      corpStatus.textContent = "Отмечено: корпоративный интерес. Если вы оставите контакт — мы сможем пригласить в корпоративный пилот.";
+      corpStatus.style.color = "var(--accent-2)";
+    }
+
+    function exportData() {
+      const payload = {
+        exported_at: nowIso(),
+        events: loadJson(STORAGE_KEYS.events, []),
+        leads: loadJson(STORAGE_KEYS.leads, []),
+        quiz: loadJson(STORAGE_KEYS.quiz, null)
+      };
+
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "easy-screening-export.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function clearData() {
+      localStorage.removeItem(STORAGE_KEYS.events);
+      localStorage.removeItem(STORAGE_KEYS.leads);
+      localStorage.removeItem(STORAGE_KEYS.quiz);
+
+      resetQuiz();
+      renderKpis();
+
+      resultCard.style.display = "none";
+      resultEmpty.style.display = "block";
+      quizClosed.style.display = "block";
+      quizWrap.classList.remove("active");
+      quizState.started = false;
+
+      track("data_cleared", {});
+    }
+
+    // -----------------------------
+    // Init
+    // -----------------------------
+    function init() {
+      loadQuizState();
+      track("landing_view", { path: window.location.pathname });
+
+      // Admin panel visibility
+      let adminVisible = isAdminOn();
+      setAdminVisible(adminVisible);
+
+      btnToggleAdmin.addEventListener("click", () => {
+        adminVisible = !adminVisible;
+        setAdminVisible(adminVisible);
+        track("admin_toggle", { visible: adminVisible });
+      });
+
+      btnStartQuizTop.addEventListener("click", () => {
+        track("cta_start_quiz_click", { placement: "hero" });
+        openQuiz();
+      });
+
+      btnStartQuizMid.addEventListener("click", () => {
+        track("cta_start_quiz_click", { placement: "mid" });
+        openQuiz();
+      });
+
+      btnPrev.addEventListener("click", prevStep);
+      btnNext.addEventListener("click", nextStep);
+      btnNone.addEventListener("click", applyNoneForStep);
+
+      btnShowLead.addEventListener("click", showLeadForm);
+
+      btnSubmitLead.addEventListener("click", submitLead);
+
+      btnPilotCta.addEventListener("click", pilotInterest);
+
+      btnCorporateInterest.addEventListener("click", markCorporate);
+
+      btnExportData.addEventListener("click", exportData);
+      btnClearData.addEventListener("click", clearData);
+
+      // Restore result if completed
+      if (quizState.completed && quizState.resultId) {
+        const result = resultLevels.find(r => r.id === quizState.resultId) || null;
+        if (result) renderResult(result);
+        quizClosed.style.display = "none";
+        quizWrap.classList.add("active");
+        renderStep();
+      }
+
+      renderKpis();
+    }
+
+    init();
+  </script>
+</body>
+</html>
