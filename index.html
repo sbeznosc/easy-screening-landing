@@ -141,7 +141,6 @@
 
     /* Sections */
     .section { padding: 54px 0; }
-    @media (min-width: 920px) { .section { padding: 72px 0; } }
 
     .wrap {
     border: 1px solid var(--border);
@@ -376,34 +375,74 @@
   </style>
 </head>
 
-<body>
-  <!-- Sticky header -->
-  <div class="header">
-    <div class="container">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <div class="brand-name">Easy Screening</div>
-            <div class="brand-sub">Москва • пилот</div>
+<section class="section">
+  <div class="container">
+    <div class="wrap">
+      <div class="split">
+        <div class="pad">
+          <div class="kicker">Проактивный контроль</div>
+          <h1>Здоровье под контролем — регулярно, просто, без суеты</h1>
+          <p class="lead">Easy Screening помогает видеть <b>тренд</b> состояния здоровья, а не ждать симптомов. Первичная оценка занимает 2–3 минуты.</p>
+
+          <div class="chips">
+            <div class="chip">Тренд вместо “разового снимка”</div>
+            <div class="chip">Персональный медицинский консьерж</div>
+            <div class="chip">AI-рекомендации + экспертный контроль</div>
+          </div>
+
+          <div style="height: 14px;"></div>
+          <div class="btn-row">
+            <button id="btnStartQuizHero" class="btn btn-primary" type="button">Пройти первичную оценку</button>
+            <a class="btn btn-secondary" href="#how">Как это работает</a>
+          </div>
+
+          <div class="divider"></div>
+          <p style="margin: 0; color: rgba(255, 255, 255, 0.62); font-size: 13px;">
+            Не диагноз и не лечение. Это навигация и мониторинг на основе данных — под экспертным контролем врачей.
+          </p>
+
+          <div class="admin" id="adminPanel">
+            <div style="color: rgba(255, 255, 255, 0.70); font-size: 13px;">
+              Локальные метрики (localStorage) + отправка в Google Sheets (если задан WEBHOOK_URL).
+            </div>
+            <div class="kpi" id="kpiTiles"></div>
+
+            <div class="btn-row" style="margin-top: 10px;">
+              <button id="btnExportData" class="btn" type="button">Экспорт JSON</button>
+              <button id="btnClearData" class="btn btn-danger" type="button">Очистить</button>
+            </div>
           </div>
         </div>
 
-        <div class="nav">
-          <a href="#value">Смысл</a>
-          <a href="#how">Как работает</a>
-          <a href="#quiz">Оценка</a>
-          <a href="#pilot">Пилот</a>
-          <a href="#faq">FAQ</a>
-        </div>
+        <div class="pad">
+          <div class="kicker">Ядро бренда</div>
+          <h2>Регулярно. Просто. Здоровье под контролем.</h2>
+          <p>Чекапы в два клика. Без очередей. Без суеты. Без лишних действий.</p>
 
-        <div class="btn-row">
-          <button id="btnToggleAdmin" class="btn btn-ghost" type="button">Метрики</button>
-          <button id="btnStartQuizTop" class="btn btn-primary" type="button">Пройти оценку</button>
+          <div class="grid3">
+            <div class="card">
+              <h3>Тренд</h3>
+              <p>Симптомов может не быть. Динамика покажет больше.</p>
+            </div>
+            <div class="card">
+              <h3>Подписка</h3>
+              <p>Контроль по плану: базовый и расширенный — по ситуации.</p>
+            </div>
+            <div class="card">
+              <h3>Консьерж</h3>
+              <p>AI-поддержка + экспертный надзор врачей.</p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <p style="margin: 0; color: rgba(255, 255, 255, 0.62); font-size: 13px;">
+            «Симптомов нет? Тренд всё расскажет.» • «Четыре чекапа в год — двенадцать месяцев спокойствия.»
+          </p>
         </div>
       </div>
     </div>
   </div>
+</section>
 
   <!-- HERO -->
   <section class="section">
