@@ -8,288 +8,332 @@
 
   <style>
     :root {
-      --bg = #0b0f14;
-      --card = #111827;
-      --muted = #94a3b8;
-      --text = #e5e7eb;
+      --bg = #0b1220;
+      --surface = rgba(255, 255, 255, 0.06);
+      --surface-2 = rgba(255, 255, 255, 0.09);
+      --border = rgba(255, 255, 255, 0.10);
+      --text = rgba(255, 255, 255, 0.92);
+      --muted = rgba(255, 255, 255, 0.66);
+
       --accent = #22c55e;
       --accent-2 = #60a5fa;
-      --danger = #f87171;
-      --border = rgba(148, 163, 184, 0.18);
-      --shadow = 0 12px 30px rgba(0, 0, 0, 0.35);
+      --danger = #fb7185;
+
+      --shadow = 0 18px 50px rgba(0, 0, 0, 0.40);
       --radius = 18px;
-      --radius-sm = 12px;
-      --max = 1100px;
+      --radius-sm = 14px;
+
+      --max = 1120px;
+      --read = 760px;
     }
 
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      background: radial-gradient(1200px 600px at 30% 0%, rgba(96, 165, 250, 0.10), transparent 60%),
-                  radial-gradient(1000px 500px at 80% 10%, rgba(34, 197, 94, 0.10), transparent 55%),
-                  var(--bg);
       color: var(--text);
-      line-height: 1.35;
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(96, 165, 250, 0.22), transparent 60%),
+        radial-gradient(900px 500px at 85% 0%, rgba(34, 197, 94, 0.18), transparent 55%),
+        radial-gradient(900px 500px at 70% 90%, rgba(244, 114, 182, 0.10), transparent 55%),
+        var(--bg);
+      line-height: 1.45;
     }
 
     a { color: inherit; text-decoration: none; }
+    b { color: rgba(255, 255, 255, 0.95); }
+
     .container {
       width: 100%;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 24px;
+      padding: 0 22px;
     }
 
-    .section {
-      padding: 28px 0;
+    /* Sticky header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 18, 32, 0.55);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-
-    .card {
-      background: rgba(17, 24, 39, 0.75);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 22px;
-      backdrop-filter: blur(10px);
-    }
-
-    .grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .grid-2 { grid-template-columns: 1fr; }
-    .grid-3 { grid-template-columns: 1fr; }
-    @media (min-width: 860px) {
-      .grid-2 { grid-template-columns: 1.2fr 0.8fr; }
-      .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 8px 12px;
-      color: var(--muted);
-      font-size: 13px;
-      background: rgba(2, 6, 23, 0.35);
-    }
-
-    h1, h2, h3 {
-      margin: 0 0 10px 0;
-      letter-spacing: -0.02em;
-    }
-
-    h1 { font-size: 34px; line-height: 1.08; }
-    @media (min-width: 860px) { h1 { font-size: 44px; } }
-
-    h2 { font-size: 22px; }
-    @media (min-width: 860px) { h2 { font-size: 28px; } }
-
-    p { margin: 0 0 10px 0; color: var(--muted); }
-    .lead { font-size: 16px; }
-    @media (min-width: 860px) { .lead { font-size: 18px; } }
-
-    .brand {
+    .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 14px;
+      padding: 14px 0;
     }
-
-    .brand strong {
-      font-size: 14px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text);
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 240px;
     }
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.85), rgba(96, 165, 250, 0.85));
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+    .brand-name { font-weight: 900; letter-spacing: 0.02em; }
+    .brand-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .nav {
+      display: none;
+      gap: 14px;
+      color: rgba(255, 255, 255, 0.70);
+      font-size: 13px;
+    }
+    @media (min-width: 920px) { .nav { display: flex; } }
+
+    .nav a:hover { color: rgba(255, 255, 255, 0.92); }
+
+    /* Buttons */
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
     button, .btn {
       appearance: none;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 12px 14px;
-      background: rgba(2, 6, 23, 0.35);
+      background: rgba(255, 255, 255, 0.06);
       color: var(--text);
       cursor: pointer;
-      transition: transform 0.06s ease, border-color 0.15s ease, background 0.15s ease;
-      font-weight: 600;
+      font-weight: 800;
+      transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease;
     }
     button:hover, .btn:hover {
       transform: translateY(-1px);
-      border-color: rgba(148, 163, 184, 0.35);
-      background: rgba(2, 6, 23, 0.55);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.18);
     }
     .btn-primary {
-      border-color: rgba(34, 197, 94, 0.35);
-      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.50);
+      background: rgba(34, 197, 94, 0.18);
     }
-    .btn-primary:hover {
-      border-color: rgba(34, 197, 94, 0.55);
-      background: rgba(34, 197, 94, 0.22);
-    }
+    .btn-primary:hover { background: rgba(34, 197, 94, 0.24); }
     .btn-secondary {
-      border-color: rgba(96, 165, 250, 0.35);
-      background: rgba(96, 165, 250, 0.12);
+      border-color: rgba(96, 165, 250, 0.50);
+      background: rgba(96, 165, 250, 0.16);
     }
-    .btn-secondary:hover {
-      border-color: rgba(96, 165, 250, 0.55);
-      background: rgba(96, 165, 250, 0.18);
+    .btn-secondary:hover { background: rgba(96, 165, 250, 0.22); }
+    .btn-ghost {
+      background: transparent;
+      border-color: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.86);
     }
     .btn-danger {
-      border-color: rgba(248, 113, 113, 0.45);
-      background: rgba(248, 113, 113, 0.10);
+      border-color: rgba(251, 113, 133, 0.55);
+      background: rgba(251, 113, 133, 0.12);
     }
 
-    .small { font-size: 13px; color: var(--muted); }
-    .muted { color: var(--muted); }
+    /* Sections */
+    .section { padding: 54px 0; }
+    @media (min-width: 920px) { .section { padding: 72px 0; } }
 
-    .feature {
+    .wrap {
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 14px;
-      background: rgba(2, 6, 23, 0.25);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .feature h3 { font-size: 16px; margin-bottom: 6px; }
-    .feature p { margin: 0; font-size: 13px; }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 920px) { .split { grid-template-columns: 1.1fr 0.9fr; } }
 
-    .steps .step {
+    .pad { padding: 26px; }
+    @media (min-width: 920px) { .pad { padding: 34px; } }
+
+    h1, h2, h3 { margin: 0 0 10px 0; letter-spacing: -0.02em; }
+    h1 { font-size: 34px; line-height: 1.08; }
+    @media (min-width: 920px) { h1 { font-size: 50px; } }
+    h2 { font-size: 22px; }
+    @media (min-width: 920px) { h2 { font-size: 30px; } }
+    h3 { font-size: 16px; margin-bottom: 8px; }
+
+    p { margin: 0 0 12px 0; color: var(--muted); }
+    .lead { font-size: 16px; }
+    @media (min-width: 920px) { .lead { font-size: 18px; } }
+
+    .read {
+      max-width: var(--read);
+      margin: 0 auto;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.74);
+      white-space: nowrap;
+    }
+
+    .grid3 {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+      margin-top: 18px;
+    }
+    @media (min-width: 920px) { .grid3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .card {
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: var(--radius-sm);
+      background: rgba(10, 16, 30, 0.35);
+      padding: 16px;
+    }
+    .card p { margin: 0; font-size: 13px; }
+
+    .steps { display: grid; gap: 12px; margin-top: 16px; }
+    .step {
       display: flex;
       gap: 12px;
       align-items: flex-start;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 255, 255, 0.10);
       border-radius: var(--radius-sm);
-      padding: 14px;
-      background: rgba(2, 6, 23, 0.25);
+      background: rgba(10, 16, 30, 0.35);
+      padding: 16px;
     }
-    .steps .num {
-      width: 28px;
-      height: 28px;
-      border-radius: 10px;
+    .num {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      font-weight: 900;
       background: rgba(96, 165, 250, 0.18);
       border: 1px solid rgba(96, 165, 250, 0.25);
-      color: var(--text);
-      font-weight: 800;
       flex: 0 0 auto;
+    }
+
+    /* Quiz */
+    .quiz-shell { max-width: 860px; margin: 0 auto; }
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.10);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin: 14px 0 18px 0;
+    }
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(34, 197, 94, 0.90), rgba(96, 165, 250, 0.90));
     }
 
     .quiz-wrap { display: none; }
     .quiz-wrap.active { display: block; }
 
-    .progress {
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.16);
-      overflow: hidden;
-      margin: 10px 0 18px 0;
-      border: 1px solid rgba(148, 163, 184, 0.10);
-    }
-    .progress > div {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, rgba(34, 197, 94, 0.85), rgba(96, 165, 250, 0.85));
+    .kicker {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.70);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
     }
 
     .opts {
       display: grid;
       gap: 10px;
       grid-template-columns: 1fr;
-      margin-top: 12px;
+      margin-top: 14px;
     }
-    @media (min-width: 860px) {
-      .opts { grid-template-columns: 1fr 1fr; }
-    }
+    @media (min-width: 920px) { .opts { grid-template-columns: 1fr 1fr; } }
 
     .opt {
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(2, 6, 23, 0.25);
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(10, 16, 30, 0.35);
       cursor: pointer;
       user-select: none;
     }
-    .opt input { margin-top: 3px; }
-    .opt span { color: var(--text); }
-    .opt:hover { border-color: rgba(148, 163, 184, 0.35); }
+    .opt:hover { border-color: rgba(255, 255, 255, 0.18); }
+    .opt input { margin-top: 4px; }
+    .opt span { color: rgba(255, 255, 255, 0.90); }
 
-    .result-badge {
+    .hint { color: rgba(255, 255, 255, 0.62); font-size: 13px; margin-top: 10px; }
+
+    /* Result */
+    .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       border-radius: 999px;
       padding: 8px 12px;
-      border: 1px solid var(--border);
-      background: rgba(2, 6, 23, 0.35);
-      color: var(--text);
-      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      font-weight: 900;
       font-size: 13px;
+      color: rgba(255, 255, 255, 0.88);
     }
+    .divider { height: 1px; background: rgba(255, 255, 255, 0.10); margin: 18px 0; }
 
-    .divider { height: 1px; background: rgba(148, 163, 184, 0.16); margin: 16px 0; }
-
+    /* Form */
     .form-row {
       display: grid;
       gap: 10px;
       grid-template-columns: 1fr;
-      margin-top: 10px;
+      margin-top: 12px;
     }
-    @media (min-width: 860px) {
-      .form-row { grid-template-columns: 1fr 1fr; }
-    }
+    @media (min-width: 920px) { .form-row { grid-template-columns: 1fr 1fr; } }
 
-    input[type="text"], input[type="email"], input[type="tel"] {
+    input[type="text"] {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 12px 12px;
-      background: rgba(2, 6, 23, 0.35);
-      border: 1px solid var(--border);
-      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.92);
       outline: none;
     }
-    input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
-      border-color: rgba(96, 165, 250, 0.45);
-    }
+    input[type="text"]:focus { border-color: rgba(96, 165, 250, 0.55); }
 
     .checkbox {
       display: flex;
       gap: 10px;
       align-items: flex-start;
-      margin-top: 10px;
-      color: var(--muted);
+      margin-top: 12px;
+      color: rgba(255, 255, 255, 0.64);
       font-size: 13px;
     }
 
-    .faq details {
-      border: 1px solid var(--border);
-      border-radius: 12px;
+    /* FAQ */
+    details {
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 14px;
       padding: 12px;
-      background: rgba(2, 6, 23, 0.25);
+      background: rgba(10, 16, 30, 0.35);
     }
-    .faq summary {
-      cursor: pointer;
-      color: var(--text);
-      font-weight: 700;
-    }
-    .faq p { margin-top: 10px; }
+    summary { cursor: pointer; font-weight: 900; color: rgba(255, 255, 255, 0.90); }
+    details p { margin-top: 10px; }
 
+    /* Metrics panel */
     .admin {
       display: none;
-      margin-top: 16px;
-      border: 1px dashed rgba(148, 163, 184, 0.35);
-      background: rgba(2, 6, 23, 0.25);
+      margin-top: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.22);
       border-radius: 14px;
+      background: rgba(10, 16, 30, 0.35);
       padding: 14px;
     }
     .admin.active { display: block; }
@@ -300,346 +344,438 @@
       gap: 10px;
       margin-top: 10px;
     }
-    @media (min-width: 860px) { .kpi { grid-template-columns: repeat(4, 1fr); } }
-    .kpi .tile {
-      border: 1px solid var(--border);
-      border-radius: 12px;
+    @media (min-width: 920px) { .kpi { grid-template-columns: repeat(4, 1fr); } }
+    .tile {
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
       padding: 12px;
-      background: rgba(2, 6, 23, 0.25);
     }
-    .tile .v { font-size: 20px; font-weight: 900; margin-top: 4px; }
-    .tile .l { color: var(--muted); font-size: 12px; }
+    .tile .l { color: rgba(255, 255, 255, 0.62); font-size: 12px; }
+    .tile .v { font-weight: 950; font-size: 20px; margin-top: 4px; }
 
     .footer {
+      padding: 26px 0 42px 0;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 13px;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
+      gap: 10px;
       justify-content: space-between;
-      padding: 16px 0 30px 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .tag {
-      display: inline-flex;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(2, 6, 23, 0.25);
-      color: var(--muted);
-      font-size: 12px;
+      align-items: center;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-
-    <!-- HERO (Tilda/Webflow: Hero / Header) -->
-    <section class="section">
-      <div class="brand">
-        <div class="pill">
-          <strong>Easy Screening</strong>
-          <span class="muted">Москва • пилот</span>
-        </div>
-        <button id="btnToggleAdmin" class="btn" type="button">Метрики</button>
-      </div>
-
-      <div class="grid grid-2">
-        <div class="card">
-          <h1>Проактивный контроль здоровья — просто, регулярно, без суеты</h1>
-          <p class="lead">Отслеживайте <b>тренд</b> показателей и понимайте, что происходит, ещё до симптомов. 2–3 минуты на первичную оценку.</p>
-
-          <div class="btn-row">
-            <button id="btnStartQuizTop" class="btn-primary" type="button">Пройти первичную оценку</button>
-            <a class="btn btn-secondary" href="#how">Как это работает</a>
+  <!-- Sticky header -->
+  <div class="header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <div class="brand-name">Easy Screening</div>
+            <div class="brand-sub">Москва • пилот</div>
           </div>
+        </div>
 
-          <div class="divider"></div>
-          <p class="small">Не диагноз и не лечение. Это навигация и мониторинг на основе данных — под экспертным контролем врачей.</p>
+        <div class="nav">
+          <a href="#value">Смысл</a>
+          <a href="#how">Как работает</a>
+          <a href="#quiz">Оценка</a>
+          <a href="#pilot">Пилот</a>
+          <a href="#faq">FAQ</a>
+        </div>
 
-          <div class="admin" id="adminPanel">
-            <div class="small">Локальные метрики (берутся из localStorage). Для пилота этого достаточно. Позже можно подключить GA4/PostHog.</div>
-            <div class="kpi" id="kpiTiles"></div>
+        <div class="btn-row">
+          <button id="btnToggleAdmin" class="btn btn-ghost" type="button">Метрики</button>
+          <button id="btnStartQuizTop" class="btn btn-primary" type="button">Пройти оценку</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- HERO -->
+  <section class="section">
+    <div class="container">
+      <div class="wrap">
+        <div class="split">
+          <div class="pad">
+            <div class="kicker">Проактивный контроль</div>
+            <h1>Здоровье под контролем — регулярно, просто, без суеты</h1>
+            <p class="lead">Easy Screening помогает видеть <b>тренд</b> состояния здоровья, а не ждать симптомов. Первичная оценка занимает 2–3 минуты.</p>
+
+            <div class="chips">
+              <div class="chip">Тренд вместо “разового снимка”</div>
+              <div class="chip">Персональный медицинский консьерж</div>
+              <div class="chip">AI-рекомендации + экспертный контроль</div>
+            </div>
+
+            <div style="height: 14px;"></div>
             <div class="btn-row">
-              <button id="btnExportData" class="btn" type="button">Экспорт JSON</button>
-              <button id="btnClearData" class="btn btn-danger" type="button">Очистить данные</button>
+              <button id="btnStartQuizHero" class="btn btn-primary" type="button">Пройти первичную оценку</button>
+              <a class="btn btn-secondary" href="#how">Как это работает</a>
             </div>
 
-            <div class="small" style="margin-top: 10px;">
-              Подсказка: открой страницу с параметром <span class="tag">?admin=1</span>, чтобы панель была открыта по умолчанию.
+            <div class="divider"></div>
+            <p style="margin: 0; color: rgba(255, 255, 255, 0.62); font-size: 13px;">
+              Не диагноз и не лечение. Это навигация и мониторинг на основе данных — под экспертным контролем врачей.
+            </p>
+
+            <div class="admin" id="adminPanel">
+              <div style="color: rgba(255, 255, 255, 0.70); font-size: 13px;">
+                Локальные метрики (localStorage) + отправка в Google Sheets (если задан WEBHOOK_URL).
+              </div>
+              <div class="kpi" id="kpiTiles"></div>
+
+              <div class="btn-row" style="margin-top: 10px;">
+                <button id="btnExportData" class="btn" type="button">Экспорт JSON</button>
+                <button id="btnClearData" class="btn btn-danger" type="button">Очистить</button>
+              </div>
             </div>
           </div>
-        </div>
 
+          <div class="pad" style="background: rgba(255, 255, 255, 0.04); border-left: 1px solid rgba(255, 255, 255, 0.08);">
+            <div class="kicker">Ядро бренда</div>
+            <h2>Регулярно. Просто. Здоровье под контролем.</h2>
+            <p>Чекапы в два клика. Без очередей. Без суеты. Без лишних действий.</p>
+
+            <div class="grid3">
+              <div class="card">
+                <h3>Тренд</h3>
+                <p>Симптомов может не быть. Динамика покажет больше.</p>
+              </div>
+              <div class="card">
+                <h3>Подписка</h3>
+                <p>Контроль по плану: базовый и расширенный — по ситуации.</p>
+              </div>
+              <div class="card">
+                <h3>Консьерж</h3>
+                <p>AI-поддержка + экспертный надзор врачей.</p>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <p style="margin: 0; color: rgba(255, 255, 255, 0.62); font-size: 13px;">
+              «Симптомов нет? Тренд всё расскажет.» • «Четыре чекапа в год — двенадцать месяцев спокойствия.»
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE -->
+  <section class="section" id="value">
+    <div class="container">
+      <div class="read">
+        <h2>Почему разовые чекапы не работают</h2>
+        <p class="lead">Разовый анализ — это снимок. Регулярный контроль — это <b>динамика</b>, которая помогает действовать заранее и спокойнее.</p>
+      </div>
+
+      <div class="grid3" style="margin-top: 18px;">
         <div class="card">
-          <div class="pill">Ядро бренда</div>
-          <div style="margin-top: 12px;"></div>
-          <h2>Регулярно. Просто. Здоровье под контролем.</h2>
-          <p>Чекапы в два клика. Без очередей. Без суеты. Без лишних действий.</p>
-
-          <div style="margin-top: 16px;" class="grid grid-3">
-            <div class="feature">
-              <h3>Тренд</h3>
-              <p>Симптомов может не быть. Динамика покажет больше.</p>
-            </div>
-            <div class="feature">
-              <h3>Подписка</h3>
-              <p>Контроль по плану: базовый и расширенный — по ситуации.</p>
-            </div>
-            <div class="feature">
-              <h3>Консьерж</h3>
-              <p>AI-поддержка + экспертный надзор врачей.</p>
-            </div>
-          </div>
+          <h3>Тренд важнее цифры</h3>
+          <p>Мы смотрим изменения во времени — это сильнее, чем одна “норма/не норма”.</p>
+        </div>
+        <div class="card">
+          <h3>Регулярно, без суеты</h3>
+          <p>План встроен в жизнь: понятно, коротко, по шагам.</p>
+        </div>
+        <div class="card">
+          <h3>Персонально</h3>
+          <p>Программы под возраст и образ жизни. Отдельно фиксируем корпоративный интерес.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- VALUE PROPS (Tilda/Webflow: Features grid) -->
-    <section class="section" id="value">
-      <div class="card">
-        <h2>Почему это работает как сервис</h2>
-        <p class="lead">Разовый чекап — это снимок. Регулярный контроль — это тренд, который помогает действовать заранее.</p>
-
-        <div class="grid grid-3" style="margin-top: 14px;">
-          <div class="feature">
-            <h3>Тренд важнее цифры</h3>
-            <p>Мы отслеживаем динамику, чтобы видеть изменения раньше.</p>
+  <!-- HOW -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="wrap">
+        <div class="pad">
+          <div class="read">
+            <h2>Как это работает</h2>
+            <p class="lead">Короткий вход → понятный результат → пилот с лучшими условиями.</p>
           </div>
-          <div class="feature">
-            <h3>Регулярно, без суеты</h3>
-            <p>План контроля встроен в жизнь: понятно и последовательно.</p>
-          </div>
-          <div class="feature">
-            <h3>Персонально</h3>
-            <p>Программы под возраст, образ жизни и контекст (включая корпоративный).</p>
-          </div>
-        </div>
 
-        <div class="divider"></div>
-        <p class="small">«Четыре чекапа в год — двенадцать месяцев спокойствия» • «Симптомов нет? Тренд всё расскажет.»</p>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS (Tilda/Webflow: Steps / Timeline) -->
-    <section class="section" id="how">
-      <div class="card">
-        <h2>Как это работает</h2>
-        <div class="grid steps" style="margin-top: 14px;">
-          <div class="step">
-            <div class="num">1</div>
-            <div>
-              <h3>Ответьте на вопросы (2–3 минуты)</h3>
-              <p>Пошаговый опрос поможет понять общий уровень контроля и приоритеты наблюдения.</p>
+          <div class="steps">
+            <div class="step">
+              <div class="num">1</div>
+              <div>
+                <h3>Ответьте на вопросы (2–3 минуты)</h3>
+                <p>Это не диагностика. Мы определяем уровень контроля и когорту для пилота.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">2</div>
+              <div>
+                <h3>Получите уровень контроля</h3>
+                <p>Без диагнозов: понятное объяснение, почему вам стоит усилить регулярность.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">3</div>
+              <div>
+                <h3>Войдите в пилот</h3>
+                <p>Расширенный результат + ранний доступ + скидка на подписку без скрытых условий.</p>
+              </div>
             </div>
           </div>
-          <div class="step">
-            <div class="num">2</div>
-            <div>
-              <h3>Получите уровень контроля</h3>
-              <p>Без диагнозов: только понятная навигация — где стоит усилить регулярность.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="num">3</div>
-            <div>
-              <h3>Войдите в пилот</h3>
-              <p>Расширенный результат + лучшие условия: ранний доступ и скидка на подписку.</p>
-            </div>
-          </div>
-        </div>
 
-        <div class="btn-row">
-          <button id="btnStartQuizMid" class="btn-primary" type="button">Пройти первичную оценку</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- QUIZ (Tilda/Webflow: Multi-step form / Quiz) -->
-    <section class="section" id="quiz">
-      <div class="card">
-        <h2>Первичная оценка здоровья</h2>
-        <p class="small">Это не диагностика. Мы используем ответы, чтобы определить уровень контроля и сегментировать запрос для пилота.</p>
-
-        <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
-
-        <div id="quizWrap" class="quiz-wrap">
-          <div class="pill" id="quizStepLabel">Шаг 1 из 6</div>
-          <div style="margin-top: 12px;"></div>
-
-          <h3 id="quizTitle"></h3>
-          <div class="opts" id="quizOptions"></div>
-
+          <div style="height: 12px;"></div>
           <div class="btn-row">
-            <button id="btnPrev" class="btn" type="button">Назад</button>
-            <button id="btnNone" class="btn" type="button">Ничего не беспокоит</button>
-            <button id="btnNext" class="btn-primary" type="button">Далее</button>
+            <button id="btnStartQuizMid" class="btn btn-primary" type="button">Пройти первичную оценку</button>
+            <a class="btn btn-ghost" href="#quiz">Перейти к опросу</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="wrap quiz-shell">
+        <div class="pad">
+          <div class="kicker">Оценка</div>
+          <h2>Первичная оценка здоровья</h2>
+          <p class="lead">Опрос занимает 2–3 минуты. В каждом блоке можно нажать «Ничего не беспокоит».</p>
+
+          <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+
+          <div id="quizWrap" class="quiz-wrap">
+            <div class="badge" id="quizStepLabel">Шаг 1 из 6</div>
+            <div style="height: 12px;"></div>
+
+            <h3 id="quizTitle"></h3>
+            <div class="opts" id="quizOptions"></div>
+
+            <div class="btn-row" style="margin-top: 14px;">
+              <button id="btnPrev" class="btn btn-ghost" type="button">Назад</button>
+              <button id="btnNone" class="btn btn-ghost" type="button">Ничего не беспокоит</button>
+              <button id="btnNext" class="btn btn-primary" type="button">Далее</button>
+            </div>
+
+            <div class="hint" id="quizHint"></div>
           </div>
 
-          <div class="small" id="quizHint" style="margin-top: 10px;"></div>
+          <div id="quizClosed" style="color: rgba(255, 255, 255, 0.70); font-size: 13px;">
+            Нажмите «Пройти оценку», чтобы начать.
+          </div>
         </div>
-
-        <div id="quizClosed" class="small" style="margin-top: 10px;">
-          Нажмите «Пройти первичную оценку», чтобы начать.
-        </div>
-
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- RESULT TEASER -->
-    <section class="section" id="result">
-      <div class="card">
-        <h2>Ваш результат</h2>
-        <p class="lead">Мы покажем уровень контроля и объясним, почему он такой. Детализация — в расширенном результате для пилота.</p>
-
-        <div class="divider"></div>
-
-        <div id="resultEmpty" class="small">Сначала пройдите оценку — результат появится здесь.</div>
-
-        <div id="resultCard" style="display: none;">
-          <div class="result-badge" id="resultBadge"></div>
-          <div style="margin-top: 12px;"></div>
-          <h3 id="resultTitle"></h3>
-          <p id="resultText"></p>
+  <!-- RESULT -->
+  <section class="section" id="result">
+    <div class="container">
+      <div class="wrap">
+        <div class="pad">
+          <div class="read">
+            <h2>Результат</h2>
+            <p class="lead">Мы покажем уровень контроля и объясним “почему”. Детализация — в расширенном результате для пилота.</p>
+          </div>
 
           <div class="divider"></div>
 
-          <h3>Что будет в расширенном результате</h3>
-          <ul class="small" style="margin: 8px 0 0 16px; color: var(--muted);">
-            <li>Приоритеты контроля на 3–6 месяцев</li>
-            <li>Сегмент (возраст / активность) и подходящая программа мониторинга</li>
-            <li>Приглашение в пилот Easy Screening с лучшими условиями</li>
-          </ul>
+          <div id="resultEmpty" style="color: rgba(255, 255, 255, 0.70); font-size: 13px;">
+            Сначала пройдите оценку — результат появится здесь.
+          </div>
 
-          <div class="btn-row">
-            <button id="btnShowLead" class="btn-primary" type="button">Получить расширенный результат</button>
+          <div id="resultCard" style="display: none;">
+            <div class="badge" id="resultBadge"></div>
+            <div style="height: 12px;"></div>
+            <h3 id="resultTitle"></h3>
+            <p id="resultText"></p>
+
+            <div class="divider"></div>
+
+            <div class="grid3">
+              <div class="card">
+                <h3>Что будет дальше</h3>
+                <p>В расширенном результате — приоритеты контроля на 3–6 месяцев.</p>
+              </div>
+              <div class="card">
+                <h3>Когорты пилота</h3>
+                <p>Возраст и активность помогут понять, кому сервис нужен сильнее.</p>
+              </div>
+              <div class="card">
+                <h3>Условия пилота</h3>
+                <p>Ранний доступ и сильная скидка на подписку, без условий.</p>
+              </div>
+            </div>
+
+            <div style="height: 14px;"></div>
+            <div class="btn-row">
+              <button id="btnShowLead" class="btn btn-primary" type="button">Получить расширенный результат</button>
+              <a class="btn btn-ghost" href="#pilot">Посмотреть пилот</a>
+            </div>
           </div>
         </div>
-
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- LEAD CAPTURE -->
-    <section class="section" id="lead">
-      <div class="card">
-        <h2>Расширенный результат и пилот</h2>
-        <p class="lead">Оставьте контакт — мы отправим расширенный результат и пригласим вас в пилот Easy Screening.</p>
+  <!-- LEAD -->
+  <section class="section" id="lead">
+    <div class="container">
+      <div class="wrap">
+        <div class="pad">
+          <div class="read">
+            <h2>Расширенный результат и доступ в пилот</h2>
+            <p class="lead">Оставьте контакт — мы отправим расширенный результат и пригласим вас в пилот Easy Screening.</p>
+          </div>
 
-        <div class="form-row">
-          <input id="leadName" type="text" inputmode="text" placeholder="Имя (опционально)" />
-          <input id="leadContact" type="text" inputmode="email" placeholder="Email или телефон" />
+          <div class="form-row">
+            <input id="leadName" type="text" inputmode="text" placeholder="Имя (опционально)" />
+            <input id="leadContact" type="text" inputmode="email" placeholder="Email или телефон" />
+          </div>
+
+          <label class="checkbox">
+            <input id="leadConsent" type="checkbox" />
+            <span>Согласен(на) на обработку данных и получение материалов по пилоту Easy Screening. Понимаю, что это не медицинская диагностика.</span>
+          </label>
+
+          <div class="btn-row" style="margin-top: 12px;">
+            <button id="btnSubmitLead" class="btn btn-primary" type="button">Получить расширенный результат и доступ в пилот</button>
+          </div>
+
+          <div id="leadStatus" style="margin-top: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.70);"></div>
+
+          <div class="divider"></div>
+          <p style="margin: 0; color: rgba(255, 255, 255, 0.64); font-size: 13px;">
+            В пилоте можно использовать уже существующие анализы — мы поможем структурировать данные и понять тренд.
+          </p>
         </div>
-
-        <label class="checkbox">
-          <input id="leadConsent" type="checkbox" />
-          <span>Согласен(на) на обработку данных и получение материалов по пилоту Easy Screening. Понимаю, что это не медицинская диагностика.</span>
-        </label>
-
-        <div class="btn-row">
-          <button id="btnSubmitLead" class="btn-primary" type="button">Получить расширенный результат и доступ в пилот</button>
-        </div>
-
-        <div class="small" id="leadStatus" style="margin-top: 10px;"></div>
-
-        <div class="divider"></div>
-        <p class="small">В пилоте можно использовать уже существующие анализы — мы поможем структурировать данные и понять тренд.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- PILOT OFFER -->
-    <section class="section" id="pilot">
-      <div class="card">
+  <!-- PILOT -->
+  <section class="section" id="pilot">
+    <div class="container">
+      <div class="read">
         <h2>Пилот Easy Screening</h2>
         <p class="lead">Условно бесплатно • ранний доступ • сильная скидка на подписку</p>
+      </div>
 
-        <div class="grid grid-3" style="margin-top: 14px;">
-          <div class="feature">
-            <h3>Можно с вашими анализами</h3>
-            <p>Если уже сдавали — поможем перепроверить и собрать картину.</p>
-          </div>
-          <div class="feature">
-            <h3>Лучшие условия</h3>
-            <p>Приоритетный доступ + скидка на подписку без скрытых условий.</p>
-          </div>
-          <div class="feature">
-            <h3>Консьерж + AI</h3>
-            <p>Рекомендательная логика на основе мировых практик под экспертным контролем.</p>
-          </div>
+      <div class="grid3" style="margin-top: 18px;">
+        <div class="card">
+          <h3>Можно с вашими анализами</h3>
+          <p>Если уже сдавали — поможем перепроверить и собрать картину.</p>
         </div>
-
-        <div class="btn-row">
-          <button id="btnPilotCta" class="btn-primary" type="button">Войти в пилот</button>
+        <div class="card">
+          <h3>Лучшие условия</h3>
+          <p>Приоритетный доступ + скидка на подписку без скрытых условий.</p>
+        </div>
+        <div class="card">
+          <h3>Консьерж + AI</h3>
+          <p>Рекомендательная логика на основе мировых практик под экспертным контролем.</p>
         </div>
       </div>
-    </section>
 
-    <!-- CORPORATE -->
-    <section class="section" id="corporate">
-      <div class="card">
-        <h2>Подходит для корпоративных программ здоровья</h2>
-        <p class="lead">Регулярный контроль сотрудников без перегруза и формальностей — с понятной аналитикой по группе.</p>
-        <p class="small">На пилоте мы фиксируем корпоративный интерес как отдельную когорту, чтобы оценить спрос.</p>
-
-        <div class="btn-row">
-          <button id="btnCorporateInterest" class="btn-secondary" type="button">Я от компании</button>
-        </div>
-
-        <div class="small" id="corpStatus" style="margin-top: 10px;"></div>
+      <div style="height: 14px;"></div>
+      <div class="btn-row">
+        <button id="btnPilotCta" class="btn btn-primary" type="button">Войти в пилот</button>
+        <button id="btnCorporateInterest" class="btn btn-secondary" type="button">Я от компании</button>
+        <a class="btn btn-ghost" href="#faq">FAQ</a>
       </div>
-    </section>
 
-    <!-- FAQ -->
-    <section class="section" id="faq">
-      <div class="card faq">
-        <h2>FAQ</h2>
-        <div class="grid" style="margin-top: 12px;">
-          <details>
-            <summary>Это медицинская диагностика?</summary>
-            <p>Нет. Easy Screening не ставит диагнозы и не назначает лечение. Это сервис навигации и мониторинга на основе данных — чтобы понимать тренд и вовремя усиливать контроль.</p>
-          </details>
-          <details>
-            <summary>Сколько времени занимает первичная оценка?</summary>
-            <p>Обычно 2–3 минуты. Вопросы пошаговые, можно пропускать блоки кнопкой «Ничего не беспокоит».</p>
-          </details>
-          <details>
-            <summary>Что я получу в пилоте?</summary>
-            <p>Расширенный результат, приоритетный доступ к приложению и лучшие условия подписки. Также можно загрузить уже существующие анализы — чтобы собрать картину и тренд.</p>
-          </details>
-          <details>
-            <summary>Кто видит мои данные?</summary>
-            <p>В этой пилотной версии данные сохраняются локально в вашем браузере. При отправке контакта мы сохраняем только то, что вы отправляете в форме, чтобы пригласить вас в пилот.</p>
-          </details>
+      <div id="corpStatus" style="margin-top: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.70);"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="wrap">
+        <div class="pad">
+          <div class="read">
+            <h2>FAQ</h2>
+          </div>
+
+          <div class="steps" style="margin-top: 14px;">
+            <details>
+              <summary>Это медицинская диагностика?</summary>
+              <p>Нет. Easy Screening не ставит диагнозы и не назначает лечение. Это навигация и мониторинг на основе данных, чтобы видеть тренд и вовремя усиливать контроль.</p>
+            </details>
+            <details>
+              <summary>Сколько времени занимает первичная оценка?</summary>
+              <p>Обычно 2–3 минуты. В каждом блоке есть «Ничего не беспокоит».</p>
+            </details>
+            <details>
+              <summary>Что я получу в пилоте?</summary>
+              <p>Расширенный результат, ранний доступ к приложению и лучшие условия подписки. Можно подключить уже существующие анализы.</p>
+            </details>
+            <details>
+              <summary>Как вы измеряете спрос?</summary>
+              <p>Мы считаем воронку: визит → старт оценки → завершение → контакт → “хочу в пилот”, плюс распределение по когортам.</p>
+            </details>
+          </div>
+
+          <div class="divider"></div>
+          <p style="margin: 0; color: rgba(255, 255, 255, 0.62); font-size: 13px;">
+            Дисклеймер: материалы на странице носят информационный характер и не являются медицинской рекомендацией.
+          </p>
         </div>
-
-        <div class="divider"></div>
-        <p class="small">
-          Дисклеймер: материалы на странице носят информационный характер и не являются медицинской рекомендацией.
-        </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
+  <!-- FOOTER -->
+  <div class="container">
     <div class="footer">
       <div>© <span id="year"></span> Easy Screening</div>
-      <div class="small">Москва • пилот • контакт: hello@example.com</div>
+      <div>Москва • пилот • контакт: <span style="color: rgba(255, 255, 255, 0.78);">hello@example.com</span></div>
     </div>
-
   </div>
 
   <script>
     // -----------------------------
+    // Google Sheets webhook (optional)
+    // -----------------------------
+    const WEBHOOK_URL = ""; // Put your Apps Script web app URL here
+
+    // Send data to webhook using x-www-form-urlencoded to avoid CORS preflight
+    function sendWebhook(type, payload) {
+      if (!WEBHOOK_URL) return;
+
+      const body = new URLSearchParams();
+      body.set("type", type);
+      body.set("payload", JSON.stringify(payload));
+
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body
+      }).catch(() => {});
+    }
+
+    // -----------------------------
     // Data + Events (pilot metrics)
     // -----------------------------
     const STORAGE_KEYS = {
-      events: "es_events_v1",
-      leads: "es_leads_v1",
-      quiz: "es_quiz_v1"
+      events: "es_events_v2",
+      leads: "es_leads_v2",
+      quiz: "es_quiz_v2",
+      session: "es_session_v2"
     };
 
-    const WEBHOOK_URL = ""; // Optional: set your webhook URL to collect leads/events server-side
+    // Key events only: keeps Sheets clean
+    const KEY_EVENTS = new Set([
+      "landing_view",
+      "cta_start_quiz_click",
+      "quiz_start",
+      "quiz_complete",
+      "result_view",
+      "lead_submit",
+      "pilot_interest_yes",
+      "corporate_interest_yes"
+    ]);
 
     function nowIso() {
       return new Date().toISOString();
@@ -667,24 +803,32 @@
       });
     }
 
+    function getSessionId() {
+      let sessionId = localStorage.getItem(STORAGE_KEYS.session);
+      if (!sessionId) {
+        sessionId = uuid();
+        localStorage.setItem(STORAGE_KEYS.session, sessionId);
+      }
+      return sessionId;
+    }
+
     function track(eventName, props = {}) {
-      const events = loadJson(STORAGE_KEYS.events, []);
+      const sessionId = getSessionId();
+      const page = window.location.pathname;
+
       const ev = {
         id: uuid(),
         ts: nowIso(),
         name: eventName,
-        props
+        props: { ...props, session_id: sessionId, page }
       };
+
+      const events = loadJson(STORAGE_KEYS.events, []);
       events.push(ev);
       saveJson(STORAGE_KEYS.events, events);
 
-      // Optional webhook (fire-and-forget)
-      if (WEBHOOK_URL) {
-        fetch(WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type: "event", payload: ev })
-        }).catch(() => {});
+      if (KEY_EVENTS.has(eventName)) {
+        sendWebhook("event", ev);
       }
 
       renderKpis();
@@ -695,14 +839,7 @@
       leads.push(lead);
       saveJson(STORAGE_KEYS.leads, leads);
 
-      if (WEBHOOK_URL) {
-        fetch(WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type: "lead", payload: lead })
-        }).catch(() => {});
-      }
-
+      sendWebhook("lead", lead);
       renderKpis();
     }
 
@@ -731,7 +868,7 @@
           { id: "act_active", label: "Активный" },
           { id: "act_very_active", label: "Очень активный / спорт" }
         ],
-        hint: "Мы используем это как когорту для пилота и персонализации результата."
+        hint: "Используем это как когорту для пилота и персонализации результата."
       },
       {
         id: "general_symptoms",
@@ -806,7 +943,6 @@
     ];
 
     const scoreWeights = {
-      // Symptoms
       gen_headaches: 1,
       gen_weakness: 1,
       gen_anxiety: 1,
@@ -833,7 +969,6 @@
       horm_tremor: 2,
       horm_sweets: 1,
 
-      // Conditions (heavier)
       cond_prediabetes: 4,
       cond_chol: 3,
       cond_anemia: 3,
@@ -881,43 +1016,36 @@
       started: false,
       completed: false,
       stepIndex: 0,
-      answers: {}, // stepId -> array of option ids
+      answers: {},
       cohort: { age: null, activity: null, corporate: false },
       score: 0,
       resultId: null
     };
 
-    function resetQuiz() {
-      quizState.started = false;
-      quizState.completed = false;
-      quizState.stepIndex = 0;
-      quizState.answers = {};
-      quizState.cohort = { age: null, activity: null, corporate: false };
-      quizState.score = 0;
-      quizState.resultId = null;
+    function loadQuizState() {
+      const saved = loadJson(STORAGE_KEYS.quiz, null);
+      if (saved && typeof saved === "object") Object.assign(quizState, saved);
+    }
+
+    function saveQuizState() {
       saveJson(STORAGE_KEYS.quiz, quizState);
     }
 
-    function loadQuizState() {
-      const saved = loadJson(STORAGE_KEYS.quiz, null);
-      if (saved && typeof saved === "object") {
-        Object.assign(quizState, saved);
-      }
+    function setCohortsFromAnswers() {
+      const ageAns = quizState.answers["age"] || [];
+      const actAns = quizState.answers["activity"] || [];
+      quizState.cohort.age = ageAns[0] || null;
+      quizState.cohort.activity = actAns[0] || null;
+      saveQuizState();
     }
 
     function computeScoreAndResult() {
       let score = 0;
-
-      for (const [stepId, selected] of Object.entries(quizState.answers)) {
-        for (const optId of selected) {
-          score += (scoreWeights[optId] || 0);
-        }
+      for (const selected of Object.values(quizState.answers)) {
+        for (const optId of selected) score += (scoreWeights[optId] || 0);
       }
-
       quizState.score = score;
 
-      // Simple rule-based mapping
-      // A: 0–3, B: 4–8, C: 9–14, D: 15+
       let result;
       if (score <= 3) result = resultLevels[0];
       else if (score <= 8) result = resultLevels[1];
@@ -925,32 +1053,21 @@
       else result = resultLevels[3];
 
       quizState.resultId = result.id;
-      saveJson(STORAGE_KEYS.quiz, quizState);
-
+      saveQuizState();
       return result;
-    }
-
-    function setCohortsFromAnswers() {
-      const ageAns = quizState.answers["age"] || [];
-      const actAns = quizState.answers["activity"] || [];
-
-      quizState.cohort.age = ageAns[0] || null;
-      quizState.cohort.activity = actAns[0] || null;
-
-      saveJson(STORAGE_KEYS.quiz, quizState);
     }
 
     // -----------------------------
     // UI bindings
     // -----------------------------
-    const yearEl = document.getElementById("year");
-    yearEl.textContent = String(new Date().getFullYear());
+    document.getElementById("year").textContent = String(new Date().getFullYear());
 
     const adminPanel = document.getElementById("adminPanel");
     const btnToggleAdmin = document.getElementById("btnToggleAdmin");
     const kpiTiles = document.getElementById("kpiTiles");
 
     const btnStartQuizTop = document.getElementById("btnStartQuizTop");
+    const btnStartQuizHero = document.getElementById("btnStartQuizHero");
     const btnStartQuizMid = document.getElementById("btnStartQuizMid");
 
     const quizWrap = document.getElementById("quizWrap");
@@ -991,15 +1108,6 @@
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function isAdminOn() {
-      const url = new URL(window.location.href);
-      return url.searchParams.get("admin") === "1";
-    }
-
-    function setAdminVisible(visible) {
-      adminPanel.classList.toggle("active", visible);
-    }
-
     function renderKpis() {
       const events = loadJson(STORAGE_KEYS.events, []);
       const leads = loadJson(STORAGE_KEYS.leads, []);
@@ -1018,12 +1126,12 @@
 
       const tiles = [
         { label: "Визиты", value: landingView },
-        { label: "Клик в квиз", value: ctaClick + " (" + cr(ctaClick, landingView) + "%)" },
-        { label: "Завершили квиз", value: quizComplete + " (" + cr(quizComplete, quizStart) + "%)" },
+        { label: "Клик в оценку", value: ctaClick + " (" + cr(ctaClick, landingView) + "%)" },
+        { label: "Завершили", value: quizComplete + " (" + cr(quizComplete, quizStart) + "%)" },
         { label: "Лиды", value: leadSubmit + " (" + cr(leadSubmit, quizComplete) + "%)" },
         { label: "Хочу в пилот", value: pilotYes + " (" + cr(pilotYes, leadSubmit) + "%)" },
-        { label: "Всего лидов (таблица)", value: leads.length },
-        { label: "Последний результат", value: quiz && quiz.resultId ? quiz.resultId : "—" },
+        { label: "Всего лидов", value: leads.length },
+        { label: "Последний уровень", value: quiz && quiz.resultId ? quiz.resultId : "—" },
         { label: "Сегменты (посл.)", value: quiz && quiz.cohort ? (quiz.cohort.age || "—") + " / " + (quiz.cohort.activity || "—") : "—" }
       ];
 
@@ -1038,7 +1146,7 @@
     }
 
     function escapeHtml(s) {
-      return s
+      return String(s)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -1050,7 +1158,7 @@
       quizState.started = true;
       quizWrap.classList.add("active");
       quizClosed.style.display = "none";
-      saveJson(STORAGE_KEYS.quiz, quizState);
+      saveQuizState();
       track("quiz_start", {});
       renderStep();
       scrollToId("quiz");
@@ -1087,11 +1195,9 @@
         `;
 
         row.addEventListener("click", (e) => {
-          // Keep native input behavior, but ensure proper single/multi handling
           const input = row.querySelector("input");
           if (!input) return;
 
-          // Prevent double toggling
           if (e.target && e.target.tagName.toLowerCase() !== "input") {
             input.checked = !input.checked;
           }
@@ -1101,7 +1207,6 @@
           if (step.type === "single") {
             current.clear();
             if (input.checked) current.add(opt.id);
-            // Uncheck other radios visually
             for (const other of quizOptions.querySelectorAll("input[type='radio']")) {
               if (other !== input) other.checked = false;
             }
@@ -1111,29 +1216,26 @@
           }
 
           quizState.answers[step.id] = Array.from(current);
-          saveJson(STORAGE_KEYS.quiz, quizState);
-          track("quiz_step_answer", { stepId: step.id, count: quizState.answers[step.id].length });
+          saveQuizState();
         });
 
         quizOptions.appendChild(row);
       }
-
-      track("quiz_step_view", { stepId: step.id, stepIndex: idx });
     }
 
     function applyNoneForStep() {
       const step = quizSteps[quizState.stepIndex];
       quizState.answers[step.id] = [];
-      saveJson(STORAGE_KEYS.quiz, quizState);
-      track("quiz_step_none", { stepId: step.id });
+      saveQuizState();
       renderStep();
     }
 
     function nextStep() {
       const idx = quizState.stepIndex;
+
       if (idx < quizSteps.length - 1) {
         quizState.stepIndex += 1;
-        saveJson(STORAGE_KEYS.quiz, quizState);
+        saveQuizState();
         renderStep();
         return;
       }
@@ -1156,7 +1258,7 @@
     function prevStep() {
       if (quizState.stepIndex <= 0) return;
       quizState.stepIndex -= 1;
-      saveJson(STORAGE_KEYS.quiz, quizState);
+      saveQuizState();
       renderStep();
     }
 
@@ -1172,7 +1274,6 @@
     }
 
     function showLeadForm() {
-      track("lead_form_view", {});
       scrollToId("lead");
     }
 
@@ -1228,23 +1329,20 @@
 
       leadStatus.textContent = "Готово. Мы сохранили заявку на пилот. Следующий шаг — приглашение и расширенный результат.";
       leadStatus.style.color = "var(--accent)";
-
-      // Optional: show "pilot interest" action
-      // Here we treat lead submit as strong intent, but we also have a dedicated CTA event
     }
 
     function pilotInterest() {
       track("pilot_interest_yes", { cohort: quizState.cohort, resultId: quizState.resultId });
       scrollToId("lead");
-      leadStatus.textContent = "Отлично. Оставьте контакт — и мы пригласим вас в пилот с лучшими условиями.";
+      leadStatus.textContent = "Оставьте контакт — и мы пригласим вас в пилот с лучшими условиями.";
       leadStatus.style.color = "var(--accent)";
     }
 
     function markCorporate() {
       quizState.cohort.corporate = true;
-      saveJson(STORAGE_KEYS.quiz, quizState);
+      saveQuizState();
       track("corporate_interest_yes", {});
-      corpStatus.textContent = "Отмечено: корпоративный интерес. Если вы оставите контакт — мы сможем пригласить в корпоративный пилот.";
+      corpStatus.textContent = "Отмечено: корпоративный интерес. При желании оставьте контакт — пригласим в корпоративный пилот.";
       corpStatus.style.color = "var(--accent-2)";
     }
 
@@ -1273,16 +1371,23 @@
       localStorage.removeItem(STORAGE_KEYS.events);
       localStorage.removeItem(STORAGE_KEYS.leads);
       localStorage.removeItem(STORAGE_KEYS.quiz);
+      localStorage.removeItem(STORAGE_KEYS.session);
 
-      resetQuiz();
-      renderKpis();
+      quizState.started = false;
+      quizState.completed = false;
+      quizState.stepIndex = 0;
+      quizState.answers = {};
+      quizState.cohort = { age: null, activity: null, corporate: false };
+      quizState.score = 0;
+      quizState.resultId = null;
+      saveQuizState();
 
       resultCard.style.display = "none";
       resultEmpty.style.display = "block";
       quizClosed.style.display = "block";
       quizWrap.classList.remove("active");
-      quizState.started = false;
 
+      renderKpis();
       track("data_cleared", {});
     }
 
@@ -1291,25 +1396,26 @@
     // -----------------------------
     function init() {
       loadQuizState();
-      track("landing_view", { path: window.location.pathname });
-
-      // Admin panel visibility
-      let adminVisible = isAdminOn();
-      setAdminVisible(adminVisible);
+      track("landing_view", {});
 
       btnToggleAdmin.addEventListener("click", () => {
-        adminVisible = !adminVisible;
-        setAdminVisible(adminVisible);
-        track("admin_toggle", { visible: adminVisible });
+        const visible = !adminPanel.classList.contains("active");
+        adminPanel.classList.toggle("active", visible);
+        renderKpis();
       });
 
       btnStartQuizTop.addEventListener("click", () => {
+        track("cta_start_quiz_click", { placement: "header" });
+        openQuiz();
+      });
+
+      btnStartQuizHero.addEventListener("click", () => {
         track("cta_start_quiz_click", { placement: "hero" });
         openQuiz();
       });
 
       btnStartQuizMid.addEventListener("click", () => {
-        track("cta_start_quiz_click", { placement: "mid" });
+        track("cta_start_quiz_click", { placement: "how" });
         openQuiz();
       });
 
@@ -1318,20 +1424,19 @@
       btnNone.addEventListener("click", applyNoneForStep);
 
       btnShowLead.addEventListener("click", showLeadForm);
-
       btnSubmitLead.addEventListener("click", submitLead);
 
       btnPilotCta.addEventListener("click", pilotInterest);
-
       btnCorporateInterest.addEventListener("click", markCorporate);
 
       btnExportData.addEventListener("click", exportData);
       btnClearData.addEventListener("click", clearData);
 
-      // Restore result if completed
+      // Restore state
       if (quizState.completed && quizState.resultId) {
         const result = resultLevels.find(r => r.id === quizState.resultId) || null;
         if (result) renderResult(result);
+
         quizClosed.style.display = "none";
         quizWrap.classList.add("active");
         renderStep();
