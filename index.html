@@ -375,6 +375,33 @@
   </style>
 </head>
 
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <div class="brand-name">Easy Screening</div>
+            <div class="brand-sub">Контроль здоровья</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Основное меню">
+          <a href="#value">Зачем</a>
+          <a href="#how">Как это работает</a>
+          <a href="#pilot">Пилот</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <div class="btn-row">
+          <a class="btn btn-primary" data-start-quiz data-placement="header" href="#quiz" role="button">Пройти первичную оценку</a>
+          <a class="btn btn-ghost" href="#quiz">Перейти к оценке</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
 <section class="section">
   <div class="container">
     <div class="wrap">
@@ -392,7 +419,7 @@
 
           <div style="height: 14px;"></div>
           <div class="btn-row">
-            <button id="btnStartQuizHero" class="btn btn-primary" type="button">Пройти первичную оценку</button>
+            <a class="btn btn-primary" data-start-quiz data-placement="hero" href="#quiz" role="button">Пройти первичную оценку</a>
             <a class="btn btn-secondary" href="#how">Как это работает</a>
           </div>
 
@@ -462,7 +489,7 @@
 
             <div style="height: 14px;"></div>
             <div class="btn-row">
-              <button id="btnStartQuizHero" class="btn btn-primary" type="button">Пройти первичную оценку</button>
+              <a class="btn btn-primary" data-start-quiz data-placement="hero" href="#quiz" role="button">Пройти первичную оценку</a>
               <a class="btn btn-secondary" href="#how">Как это работает</a>
             </div>
 
@@ -575,7 +602,7 @@
 
           <div style="height: 12px;"></div>
           <div class="btn-row">
-            <button id="btnStartQuizMid" class="btn btn-primary" type="button">Пройти первичную оценку</button>
+            <a class="btn btn-primary" data-start-quiz data-placement="how" href="#quiz" role="button">Пройти первичную оценку</a>
             <a class="btn btn-ghost" href="#quiz">Перейти к опросу</a>
           </div>
         </div>
@@ -1114,9 +1141,7 @@
     const btnToggleAdmin = document.getElementById("btnToggleAdmin");
     const kpiTiles = document.getElementById("kpiTiles");
 
-    const btnStartQuizTop = document.getElementById("btnStartQuizTop");
-    const btnStartQuizHero = document.getElementById("btnStartQuizHero");
-    const btnStartQuizMid = document.getElementById("btnStartQuizMid");
+    const startQuizButtons = Array.from(document.querySelectorAll("[data-start-quiz]"));
 
     const quizWrap = document.getElementById("quizWrap");
     const quizClosed = document.getElementById("quizClosed");
@@ -1210,6 +1235,9 @@
       track("quiz_start", {});
       renderStep();
       scrollToId("quiz");
+      if (window.history && history.replaceState) {
+        history.replaceState(null, "", "#quiz");
+      }
     }
 
     function renderStep() {
@@ -1446,39 +1474,35 @@
       loadQuizState();
       track("landing_view", {});
 
-      btnToggleAdmin.addEventListener("click", () => {
-        const visible = !adminPanel.classList.contains("active");
-        adminPanel.classList.toggle("active", visible);
-        renderKpis();
+      if (btnToggleAdmin) {
+        btnToggleAdmin.addEventListener("click", () => {
+          const visible = !adminPanel.classList.contains("active");
+          adminPanel.classList.toggle("active", visible);
+          renderKpis();
+        });
+      }
+
+      startQuizButtons.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
+          if (event) event.preventDefault();
+          const placement = btn.dataset.placement || "landing";
+          track("cta_start_quiz_click", { placement });
+          openQuiz();
+        });
       });
 
-      btnStartQuizTop.addEventListener("click", () => {
-        track("cta_start_quiz_click", { placement: "header" });
-        openQuiz();
-      });
+      if (btnPrev) btnPrev.addEventListener("click", prevStep);
+      if (btnNext) btnNext.addEventListener("click", nextStep);
+      if (btnNone) btnNone.addEventListener("click", applyNoneForStep);
 
-      btnStartQuizHero.addEventListener("click", () => {
-        track("cta_start_quiz_click", { placement: "hero" });
-        openQuiz();
-      });
+      if (btnShowLead) btnShowLead.addEventListener("click", showLeadForm);
+      if (btnSubmitLead) btnSubmitLead.addEventListener("click", submitLead);
 
-      btnStartQuizMid.addEventListener("click", () => {
-        track("cta_start_quiz_click", { placement: "how" });
-        openQuiz();
-      });
+      if (btnPilotCta) btnPilotCta.addEventListener("click", pilotInterest);
+      if (btnCorporateInterest) btnCorporateInterest.addEventListener("click", markCorporate);
 
-      btnPrev.addEventListener("click", prevStep);
-      btnNext.addEventListener("click", nextStep);
-      btnNone.addEventListener("click", applyNoneForStep);
-
-      btnShowLead.addEventListener("click", showLeadForm);
-      btnSubmitLead.addEventListener("click", submitLead);
-
-      btnPilotCta.addEventListener("click", pilotInterest);
-      btnCorporateInterest.addEventListener("click", markCorporate);
-
-      btnExportData.addEventListener("click", exportData);
-      btnClearData.addEventListener("click", clearData);
+      if (btnExportData) btnExportData.addEventListener("click", exportData);
+      if (btnClearData) btnClearData.addEventListener("click", clearData);
 
       // Restore state
       if (quizState.completed && quizState.resultId) {
